@@ -1,0 +1,11 @@
+{
+  "name": "nym",
+  "version": "0.0.1",
+  "description": "minimalist url route matcher - (features TJ Holowaychuks routing code from page.js)",
+  "main": "nym.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bluntworks",
+  "license": "MIT"
+}
