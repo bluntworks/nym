@@ -26,6 +26,7 @@ Req.prototype.methods = function() {
       o.success = function(res) { cb(null, res); };
       o.error   = function(err) { cb(err); };
 
+      log(verb, o.data);
       self.ajax(o);
     };
   });

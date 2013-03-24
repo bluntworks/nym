@@ -6,13 +6,17 @@ app.get('/api/:id', function(req, res) {
   log('api get: ', this.params);
 });
 
-app.get('/api/:id', function(req, res) {
-  log(req.headers);
+app.post('/api/:id', function(req, res) {
+  req.on('readable', function() {
+    log('read', req.read());
+  });
+  log(this);
 });
 
 var http = require('http');
 
 var srv  = http.createServer(function(req, res) {
+
   var ctx = app.test(req.method.toLowerCase(), req.url);
   if(ctx && ctx.fn) {
     ctx.fn.call(ctx, req, res);
