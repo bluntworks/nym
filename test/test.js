@@ -1,23 +1,26 @@
-var app = require('../nym')();
-var log = console.log;
+var app      = require('../nym')();
+var log      = console.log;
+var ecstatic = require('ecstatic')(__dirname);
 
-app.get('/php-api/sale/:sid/:bid', function(req, res) {
-  log('log get sales');
+app.get('/api/:id', function(req, res) {
+  log('api get: ', this.params);
 });
 
-app.post('/php-api/sale/:sid', function(req, res) {
-  log('log get sales');
+app.get('/api/:id', function(req, res) {
+  log(req.headers);
 });
 
-app.put('/php-api/sale/:sid', function(req, res) {
-  log('log get sales');
+var http = require('http');
+
+var srv  = http.createServer(function(req, res) {
+  var ctx = app.test(req.method.toLowerCase(), req.url);
+  if(ctx && ctx.fn) {
+    ctx.fn.call(ctx, req, res);
+  } else {
+    ecstatic(req, res);
+  }
 });
 
-app.del('/php-api/sale/:sid/:bid', function(req, res) {
-  log('log get sales');
-});
+srv.listen(8000);
 
-var ctx = app.test('get', '/php-api/sale/0000/9999');
-
-log(ctx);
-//console.log(app.routes);
+log('listen on 8000');
