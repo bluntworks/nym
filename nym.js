@@ -30,7 +30,6 @@ R.restify = function() {
 
 R.test = function(verb, path) {
   var ctx = false;
-
   each(filter(this.routes, function(it) { return it.verb === verb; })
   , function(r) {
       var params = {}
@@ -40,8 +39,15 @@ R.test = function(verb, path) {
         ctx.params = params;
       }
   });
-
   return ctx;
+}
+
+R.route = function(req, res) {
+  var ctx = this.test(req.method.toLowerCase(), req.url);
+  if(ctx) {
+    ctx.fn.call(ctx, req, res);
+    return ctx;
+  } else return false;
 }
 
 module.exports = function() {
