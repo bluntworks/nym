@@ -45,15 +45,15 @@ R.restify = function() {
 
 R.test = function(verb, path) {
   var ctx = false;
-  each(this.routes[verb],
-    function(r) {
-      var params = {}
-      var res =  match.call(r, path, params);
-      if(res) {
-        ctx = r;
-        ctx.params = params;
-      }
-  });
+  var routes = this.routes[verb]
+  for(var i = 0, len = routes.length; i < len; i++) {
+    var r = routes[i]
+    var params = {}
+    if(match.call(r, path, params)) {
+      ctx = r;
+      ctx.params = params;
+    }
+  }
   return ctx;
 }
 
