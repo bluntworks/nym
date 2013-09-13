@@ -1,7 +1,10 @@
+var log    = require('bitlog')
 var p2r    = require('./lib/path2regx');
 var match  = require('./lib/match');
 var each   = function(list, fn) { Array.prototype.forEach.call(list, fn); }
 var filter = function(list, fn) { return Array.prototype.filter.call(list, fn); }
+var stak   = require('blunt-stack')
+var _slice = Array.prototype.slice
 
 var Roostr = function(verbs) {
   if(!(this instanceof Roostr)) return new Roostr(verbs);
@@ -15,13 +18,21 @@ var R = Roostr.prototype;
 R.restify = function() {
   var self = this;
   each(this.verbs, function(verb) {
-    R[verb] = function(path, fn) {
+    R[verb] = function() {
+      var args = _slice.call(arguments, 0)
+      var path = args.shift()
       var keys = [];
+
+      if(args.length === 2 && Array.isArray(args[0])) {
+        var mw = args.shift()
+        args = mw.concat(args)
+      }
+
       self.routes.push({
           verb: verb
         , regexp: p2r.call(self, path, keys, false, false)
         , path: path
-        , fn: fn
+        , fn: stak.compose.apply(null, args)
         , keys: keys
       });
     };

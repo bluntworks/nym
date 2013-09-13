@@ -2,15 +2,29 @@ var app      = require('../nym')();
 var log      = console.log;
 var ecstatic = require('ecstatic')(__dirname);
 
-app.get('/api/:id', function(req, res) {
-  log('api get: ', this.params);
+
+var auth = function(req, res, next) {
+  log('yaya auth', this.params);
+  next()
+}
+
+var mw = [
+  auth,
+  function(req, res, next) {
+    log('func 2')
+    next()
+  }
+]
+
+app.get('/api/:id', mw, function(req, res) {
+  log('api get: ', this);
 });
 
-app.post('/api/:id', function(req, res) {
+app.post('/api/:id', auth, function(req, res) {
+  log('post', this.params)
   req.on('readable', function() {
     log('read', req.read());
   });
-  log(this);
 });
 
 var http = require('http');
