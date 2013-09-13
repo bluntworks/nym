@@ -10,7 +10,11 @@ var Roostr = function(verbs) {
   if(!(this instanceof Roostr)) return new Roostr(verbs);
   this.verbs = verbs || ['get', 'post', 'put', 'del'];
   this.restify();
-  this.routes = [];
+  this.routes = {}
+  var self = this
+  self.verbs.forEach(function(v) {
+    self.routes[v] = []
+  })
 }
 
 var R = Roostr.prototype;
@@ -28,7 +32,7 @@ R.restify = function() {
         args = mw.concat(args)
       }
 
-      self.routes.push({
+      self.routes[verb].push({
           verb: verb
         , regexp: p2r.call(self, path, keys, false, false)
         , path: path
@@ -41,8 +45,8 @@ R.restify = function() {
 
 R.test = function(verb, path) {
   var ctx = false;
-  each(filter(this.routes, function(it) { return it.verb === verb; })
-  , function(r) {
+  each(this.routes[verb],
+    function(r) {
       var params = {}
       var res =  match.call(r, path, params);
       if(res) {
