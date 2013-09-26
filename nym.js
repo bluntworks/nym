@@ -66,7 +66,8 @@ R.route = function(req, res) {
   if(ctx) {
     ctx.fn.call(ctx, req, res);
     return ctx;
-  } else return pub(req, res);
+  //} else return pub(req, res);
+  } else return false
 }
 
 R.static = function(dir) {
