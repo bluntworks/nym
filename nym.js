@@ -5,12 +5,15 @@ var each   = function(list, fn) { Array.prototype.forEach.call(list, fn); }
 var filter = function(list, fn) { return Array.prototype.filter.call(list, fn); }
 var stak   = require('blunt-stack')
 var _slice = Array.prototype.slice
+var ecstatic = require('ecstatic')
+var noop = function() {}
 
 var Roostr = function(verbs) {
   if(!(this instanceof Roostr)) return new Roostr(verbs);
   this.verbs = verbs || ['get', 'post', 'put', 'del'];
   this.restify();
   this.routes = {}
+
   var self = this
   self.verbs.forEach(function(v) {
     self.routes[v] = []
@@ -59,10 +62,16 @@ R.test = function(verb, path) {
 
 R.route = function(req, res) {
   var ctx = this.test(req.method.toLowerCase(), req.url);
+  var pub = this.public || noop;
   if(ctx) {
     ctx.fn.call(ctx, req, res);
     return ctx;
-  } else return false;
+  } else return pub(req, res);
+}
+
+R.static = function(dir) {
+  log('static route', dir)
+  this.public = ecstatic(dir)
 }
 
 module.exports = function() {
