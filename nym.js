@@ -1,4 +1,4 @@
-var log    = require('bitlog')
+var log    = require('blunt-log')
 var p2r    = require('./lib/path2regx');
 var match  = require('./lib/match');
 var each   = function(list, fn) { Array.prototype.forEach.call(list, fn); }
@@ -48,6 +48,7 @@ R.restify = function() {
 
 R.test = function(verb, path) {
   var ctx = false;
+  verb = ('delete' == verb) ? 'del' : verb;
   var routes = this.routes[verb]
   for(var i = 0, len = routes.length; i < len; i++) {
     var r = routes[i]
