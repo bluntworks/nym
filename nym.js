@@ -5,7 +5,6 @@ var each   = function(list, fn) { Array.prototype.forEach.call(list, fn); }
 var filter = function(list, fn) { return Array.prototype.filter.call(list, fn); }
 var stak   = require('blunt-stack')
 var _slice = Array.prototype.slice
-var ecstatic = require('ecstatic')
 var noop = function() {}
 
 var Roostr = function(verbs) {
@@ -67,13 +66,7 @@ R.route = function(req, res) {
   if(ctx) {
     ctx.fn.call(ctx, req, res);
     return ctx;
-  //} else return pub(req, res);
   } else return false
-}
-
-R.static = function(dir) {
-  log('static route', dir)
-  this.public = ecstatic(dir)
 }
 
 module.exports = function() {
