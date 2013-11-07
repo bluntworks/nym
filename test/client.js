@@ -35,7 +35,6 @@ Req.prototype.methods = function() {
 Req.prototype.ajax = $.ajax;
 
 $(function() {
-  log('p o o h ');
 
   var req = Req();
 
