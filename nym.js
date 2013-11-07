@@ -72,3 +72,6 @@ R.route = function(req, res) {
 module.exports = function() {
   return Roostr();
 }
+
+module.exports.pathRegx = p2r
+module.exports.match = match
