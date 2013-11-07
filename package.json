@@ -1,6 +1,6 @@
 {
   "name": "nym",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "minimalist url route matcher - (features TJ Holowaychuks routing code from page.js)",
   "main": "nym.js",
   "scripts": {
